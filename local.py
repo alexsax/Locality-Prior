@@ -120,21 +120,27 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
         )
-        self.classifier = nn.Sequential(
-            nn.Dropout(),
-            nn.Linear(256 * 6 * 6, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
-            nn.LocalityPriorLinear(4096, 4096),
-            nn.ReLU(inplace=True),
-            nn.Linear(4096, num_classes),
+        self.classifier = SelectiveSequential(
+            ['fc5', 'fc6', 'fc7'],
+            OrderedDict([
+                ('d4', nn.Dropout()),
+                ('fc5_', nn.Linear(256 * 6 * 6, 4096)),
+                ('fc5', nn.ReLU(inplace=True)),
+                ('d5', nn.Dropout()),
+                ('fc6_', nn.LocalityPriorLinear(4096, 4096)),
+                ('fc6', nn.ReLU(inplace=True)),
+                ('fc7', nn.Linear(4096, num_classes))
+            ])
         )
 
-    def forward(self, x, return_activations):
+    def forward(self, x, return_activations=False):
         x = self.features(x)
         x = x.view(x.size(0), 256 * 6 * 6)
         x = self.classifier(x)
-        return x
+        if return_activations:
+            return x
+        else:
+            return x[-1]
 
 
 def alexnet_local(pretrained=False, **kwargs):
