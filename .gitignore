@@ -1,0 +1,9 @@
+
+# Logs, checkpoints, and cache
+runs/*
+__pycache__
+.ipynb_checkpoints
+
+# Compiled code
+*.pyc
+
