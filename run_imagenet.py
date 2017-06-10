@@ -14,8 +14,8 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 
-import locality_model
-models.__dict__['alexnet_local'] = locality_model.alexnet_local
+import local
+models.__dict__['alexnet_local'] = local.alexnet_local
 
 
 
@@ -113,7 +113,7 @@ def main():
             normalize,
         ])),
         batch_size=args.batch_size, shuffle=True,
-        num_workers=args.workers, pin_memory=True)
+        num_workers=args.workers, pin_memory=False)
 
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose([
@@ -123,7 +123,7 @@ def main():
             normalize,
         ])),
         batch_size=args.batch_size, shuffle=False,
-        num_workers=args.workers, pin_memory=True)
+        num_workers=args.workers, pin_memory=False)
 
     if args.evaluate:
         validate(val_loader, model, criterion)
@@ -137,7 +137,7 @@ def main():
         train(train_loader, model, criterion, optimizer, epoch)
 
         # evaluate on validation set
-        prec1 = validate(val_loader, model, criterion)
+        prec1 = validate(val_loader, model, criterion, epoch)
 
         # remember best prec@1 and save checkpoint
         is_best = prec1 > best_prec1
@@ -199,12 +199,12 @@ def train(train_loader, model, criterion, optimizer, epoch):
                    epoch, i, len(train_loader), batch_time=batch_time,
                    data_time=data_time, loss=losses, top1=top1, top5=top5))
 
-    log_value('train_loss', losses, epoch)
-    log_value('train_top1', top1, epoch)
-    log_value('train_top5', top5, epoch)
+    log_value('train_loss', losses.avg, epoch)
+    log_value('train_top1', top1.avg, epoch)
+    log_value('train_top5', top5.avg, epoch)
 
 
-def validate(val_loader, model, criterion):
+def validate(val_loader, model, criterion, epoch):
     batch_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()
@@ -245,9 +245,9 @@ def validate(val_loader, model, criterion):
     print(' * Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f}'
           .format(top1=top1, top5=top5))
 
-    log_value('validation_loss', losses, epoch)
-    log_value('validation_top1', top1, epoch)
-    log_value('validation_top5', top5, epoch)
+    log_value('validation_loss', losses.avg, epoch)
+    log_value('validation_top1', top1.avg, epoch)
+    log_value('validation_top5', top5.avg, epoch)
     return top1.avg
 
 

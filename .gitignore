@@ -3,6 +3,7 @@
 runs/*
 __pycache__
 .ipynb_checkpoints
+unknown_model/*
 
 # Compiled code
 *.pyc

@@ -83,7 +83,7 @@ class SelectiveSequential(nn.Module):
 
     def forward(self, x):
         lst = []
-        for name, module in self._modules.iteritems():
+        for name, module in self._modules.items():
             x = module(x)
             if name in self._to_select:
                 lst.append(x)
@@ -127,7 +127,7 @@ class AlexNet(nn.Module):
                 ('fc5_', nn.Linear(256 * 6 * 6, 4096)),
                 ('fc5', nn.ReLU(inplace=True)),
                 ('d5', nn.Dropout()),
-                ('fc6_', nn.LocalityPriorLinear(4096, 4096)),
+                ('fc6_', LocalityPriorLinear(4096, 4096)),
                 ('fc6', nn.ReLU(inplace=True)),
                 ('fc7', nn.Linear(4096, num_classes))
             ])
