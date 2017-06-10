@@ -66,7 +66,8 @@ def prior_2d(inputDimension, outputDimension, topology='euclidean', weight_fn=np
     long_idxs = np.reshape(idxs, (-1,2))
     dist = distance.cdist(long_idxs, long_idxs, metric=topology) + 1
     prior = 1./weight_fn(dist)
-    return normalize_prior(prior)
+    return prior
+    # return normalize_prior(prior)
 
 
 class SelectiveSequential(nn.Module):
