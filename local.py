@@ -104,8 +104,9 @@ model_urls = {
 
 class AlexNet(nn.Module):
     # Amended from http://pytorch.org/docs/torchvision/models.html
-    def __init__(self, num_classes=1000):
+    def __init__(self, use_local=True, num_classes=1000):
         super(AlexNet, self).__init__()
+        self.use_local = use_local
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
@@ -121,6 +122,12 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
         )
+
+        if use_local:
+            self.fc6_ = LocalityPriorLinear(4096, 4096, weight_fn=lambda x: x)
+        else:
+            self.fc6_ = nn.Linear(4096, 4096)
+
         self.classifier = SelectiveSequential(
             ['fc5', 'fc6', 'fc7'],
             OrderedDict([
@@ -128,7 +135,7 @@ class AlexNet(nn.Module):
                 ('fc5_', nn.Linear(256 * 6 * 6, 4096)),
                 ('fc5', nn.ReLU(inplace=True)),
                 ('d5', nn.Dropout()),
-                ('fc6_', LocalityPriorLinear(4096, 4096)),
+                ('fc6_', self.fc6_),
                 ('fc6', nn.ReLU(inplace=True)),
                 ('fc7', nn.Linear(4096, num_classes))
             ])
