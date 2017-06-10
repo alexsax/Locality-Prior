@@ -68,7 +68,10 @@ def main():
         model = models.__dict__[args.arch](pretrained=True)
     else:
         print("=> creating model '{}'".format(args.arch))
-        model = models.__dict__[args.arch]()
+        if args.arch.lower() == 'alexnet':
+            model = models.__dict__[args.arch](use_local=False)
+        else:
+            model = models.__dict__[args.arch]()
 
     if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
         model.features = torch.nn.DataParallel(model.features)
