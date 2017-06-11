@@ -61,6 +61,7 @@ The output of the locality prior layer has activations which have a slightly but
 ![variances](https://user-images.githubusercontent.com/5157485/27009241-f1f8fe4c-4e3d-11e7-9815-70387b45ee4f.png)
 
 | Locality Variance | Control Variance |
+| ----------------- | ---------------- |
 | 8.458 |  8.667 |
 `T-score: -6.49, P-value: 1.35e-10`
 
@@ -68,6 +69,7 @@ The output of the locality prior layer has activations which have a slightly but
 ### ImageNet
 We also ran the experiment on ImageNet. We changed the FC6 layer to a LP layer and, again, added a BN layer afterwards to both the treatment and control networks. Since AlexNet's FC6 layer is much larger than LeNet's, the prior is qualitatively different than in LeNet and connections are sparser. Here is what the two priors look like:
 | LeNet | AlexNet |
+| ----- | ------- |
 |![mnist_prior](https://user-images.githubusercontent.com/5157485/27009331-ea1344ce-4e3f-11e7-998c-3b9a940273b8.png) | ![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27008516-340998d4-4e28-11e7-98d0-8eb7e562d599.png)
  |
 
