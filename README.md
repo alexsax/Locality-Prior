@@ -2,7 +2,6 @@
 
 ## Table of Contents 
 0. Intro
-0. Related Work
 0. Methods
     0. Implementation
 0. Experiments
@@ -13,9 +12,17 @@
 0. References 
 
 ## Intro
----
 
-## Related Work
+FMRI images of the brain reveal that there is significant neuronal clustering of activations. It is believed that these correlated activations indicate areas of the brain with functional specificity. These areas function at various levels of abstraction, from low-level sensorimotor tasks, to mid-level identification of faces, and even very abstract things such as thinking about another's thoughts [2]. The The brain has specific activation patterns in response to different visual inputs, and the object being viewed can be decoded from these patterns [3]. It still an open debate as to what extent these representations are distributed versus local. 
+
+It is still not completely known why we see functional specificity in the brain. If an engineer were to design the brain, she might create different modules which each have a different function, and connect them up in order to achieve a larger purpose. This is one way in which functional specificity could arise. 
+
+Another reason for functional specificity is that it could be energetically favorable. It is related to Hebb's postulate [5], summarized by Löwel, that  _"Cells that fire together, wire together"_. Succintly, if two neurons need to transmit information, it requires less energy to transmit the signal if the neurons are close together. This also reduces latency. If these two neurons are connected, then, it would be beneficial for them to be in close physical proximity. 
+
+One way to test whether such a wiring cost could lead to functional specificity is to build computational models of the brain, which are simple enough that we can simulate them quickly and exactly, yet complex enough to capture the patterns that we see in a real brain. DiCarlo et al. [6] propose that this will be the major pathway for understanding the brain in the near-term. Yamins et al. [7] find that Convolutional Neural Networks (CNNs) well estimate patterns seen in the brain, and also achieve similar performance on some visual tasks.
+
+In this spirit, we propose a way to extend a CNN's linear layers in order to to include the wiring cost. We show that these extended models have activations which display more class-dependent neuronal clustering when compared to the standard (control) CNN models. 
+
 ---
 
 ## Methods 
@@ -45,6 +52,7 @@ If the input layer has activations (x) of size K and the output is a vector _y_ 
 
 The LP layer is implemented as a layer in PyTorch. The prior should be rescaled so that the total input to each neuron is the same as before, or multiplied by K/sum(inputs). The network will be able to learn from this, but this will also allow smaller weights in W which will interfere with the effectiveness of the weight regularization. Instead, we apply a Batch Normalization layer after the LP layer. In the experiments, we make sure to include the BN layer in the control networks for fair comparisons. 
 
+Note: This could probably also be implemented as a convolutional layer, too. 
 ---
 
 ## Experiments
@@ -68,7 +76,21 @@ We trained two LeNets on MNIST where the LeNets have an extra Linear and BN laye
 | Control      | 98.1     | 0.101  |
 | Local        | 97.9     | 0.122  |
 
-We can now visualize some of the test-set results from the two networks after training. Here are the activation patterns for each class, averaged over 1000 images from the test set. 
+
+### ImageNet
+We also ran the experiment on ImageNet. We changed the FC6 layer to a LP layer and, again, added a BN layer afterwards to both the treatment and control networks. Since AlexNet's FC6 layer is much larger than LeNet's, the prior is qualitatively different than in LeNet and connections are sparser. Here is what the two priors look like:
+
+| LeNet | AlexNet |
+| ----- | ------- |
+| ![mnist_prior](https://user-images.githubusercontent.com/5157485/27009331-ea1344ce-4e3f-11e7-998c-3b9a940273b8.png) | ![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27009386-689ec632-4e41-11e7-9c9d-8fb0afe38f63.png) |
+
+
+--- 
+
+## Results
+
+### MNIST
+We can now visualize some of the test-set results from the two networks after training. Here are the activation patterns for each class, averaged over 1000 images from the test set. We find that the output activations of the LP layer display more clustering, bcompared to the control network, but any difference is hard to see visually. 
 
 #### Locality input activations
 <img width="827" alt="fc1_outputs" src="https://user-images.githubusercontent.com/5157485/27009093-08130d48-4e3a-11e7-8676-237af7bba256.png">
@@ -85,13 +107,8 @@ The output of the locality prior layer has activations which have a slightly but
 | 8.458 |  8.667 |
 `T-score: -6.49, P-value: 1.35e-10`
 
-
 ### ImageNet
-We also ran the experiment on ImageNet. We changed the FC6 layer to a LP layer and, again, added a BN layer afterwards to both the treatment and control networks. Since AlexNet's FC6 layer is much larger than LeNet's, the prior is qualitatively different than in LeNet and connections are sparser. Here is what the two priors look like:
-
-| LeNet | AlexNet |
-| ----- | ------- |
-| ![mnist_prior](https://user-images.githubusercontent.com/5157485/27009331-ea1344ce-4e3f-11e7-998c-3b9a940273b8.png) | ![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27009386-689ec632-4e41-11e7-9c9d-8fb0afe38f63.png) |
+Below are some sample outputs an an analysis of the variances between the two networks. We find that both the input activations and output activations of the LP layer display significantly higher neuronal clustering compared to the control network. 
 
 #### Locality inputs (FC5 outputs)
 <img width="456" alt="fc1_imagenet" src="https://user-images.githubusercontent.com/5157485/27014450-382ca9ca-4eae-11e7-9c0f-2fb9226adad7.png">
@@ -109,17 +126,27 @@ We also ran the experiment on ImageNet. We changed the FC6 layer to a LP layer a
 | 658.2             |  691.5           |
 `T-score: -24.91, P-value: 6.203e-107`
 
---- 
-
-## Results
-
-The Locality Prior layer + weight decay is one way to impose a wiring cost on a network. Across multiple datasets
 
 ---
 
+## Conclusions
+
+The Locality Prior layer + weight decay is one way to impose a wiring cost on a network. We show that the LP layer has outputs with significantly lower variance in activations, compared to a control network. We also note that clustering of both inputs and outputs inceases with layer size. 
+
+We think that this is a good demonstration that neuron clustering can arise natu rally from a wiring cost and network topology. 
+
+We think that in a physical network the connections could be sparsified after training. Specifically, the network can be sparsified removing connections which have a small weight in the _W.*P_ matrix. This would be a sort of analogue to reduced brain plasticity in adulthood. We think that this sparsification could be done without a sigificant loss in accuracy.
+
+Another interesting avenue would be to examine whether these representations are nested in the network, as they are in the brain [4].
 
 
 ## References
 ---
 
 [1] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4587756/
+[2] Kanwisher '10: http://www.pnas.org/content/107/25/11163.full.pdf
+[3] Haxby '01: http://haxbylab.dartmouth.edu/publications/HGF+01.pdf
+[4] Grill-Spect0r '14: http://vpnl.stanford.edu/papers/GrillSpectorWeiner_NRN_2014.pdf
+[5] Hebb, D.O. (1949). The Organization of Behavior. New York: Wiley & Sons.
+[6] DiCarlo et al. '12: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3306444/pdf/nihms352068.pdf
+[7] Yamins et al. '14: http://www.pnas.org/content/111/23/8619.abstract
