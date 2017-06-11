@@ -30,7 +30,7 @@ Where darker colors indicate more expensive connections between neurons. As an s
 
 <img width="255" alt="Simple LP layer" src="https://user-images.githubusercontent.com/5157485/27008395-a04af672-4e24-11e7-9548-7f1038eaf598.png">
 
-This is a very simple example of an LP layer, but we can also create more complex topologies. The connectivity in the brain is more similar to a 2D topology than the 1D version above, since the cortical manifold is a thin sheet of gray matter which is compactly folded and wrapped around white matter in the brain. We can approximate this with a 2D topology and where distance is the standard L2 norm. We also give this a linear wiring cost. Another way of interpreting this is that the signal decays linearly with distance. The initial signal therefore needs to be stronger to compensate for the lossiness. This can be penalized with standard L1 weight deay. 
+This is a very simple example of an LP layer, but more complex topologies are also possible. The connectivity in the brain is more similar to a 2D topology than the 1D version above, since the cortical manifold is a thin sheet of gray matter which is compactly folded and wrapped around white matter in the brain. We can approximate this with a 2D topology and where distance is the standard L2 norm. We also give this a linear wiring cost. Another way of interpreting this is that the signal decays linearly with distance. The initial signal therefore needs to be stronger to compensate for the lossiness. This can be penalized with standard L1 weight deay. 
 
 The induced topology can be visualized, just at before. Here is the transmitted signal for the center neuron:
 
@@ -49,7 +49,7 @@ The LP layer is implemented as a layer in PyTorch. The prior should be rescaled 
 
 ## Experiments
 
-We analyze the effects of the LP layer on two standard networks trained on two standard datasets. In particular, we train LeNet on MNIST and AlexNet on ImageNet.
+We analyze the effects of the LP layer on two standard networks trained on two standard datasets. In particular, we train LeNet on MNIST and AlexNet on ImageNet. We calculate the variance of the activations in both the inputs and outputs of the LP layer. We show that in 3 of the 4 cases, the activations have significantly lower variance. In the case where variance is higher, this is caused by one particular class with a several highly indicative neurons, spread out. 
 
 | Hyperparameter | MNIST   | ImageNet |
 | -------------- |:-------:|:--------:|
@@ -69,13 +69,14 @@ We trained two LeNets on MNIST where the LeNets have an extra Linear and BN laye
 | Local        | 97.9     | 0.122  |
 
 We can now visualize some of the test-set results from the two networks after training. Here are the activation patterns for each class, averaged over 1000 images from the test set. 
+
 #### Locality input activations
 <img width="827" alt="fc1_outputs" src="https://user-images.githubusercontent.com/5157485/27009093-08130d48-4e3a-11e7-8676-237af7bba256.png">
+Here, digit 3 is the one that causes the local variance to be higher. When digit 3 is dropped, the difference is no longer significant. In addition, note that the prior applied to LeNet does not enforce locality as well as it does for AlexNet, since LeNet has a very small linear layer.
 
 #### Locality output activations
 <img width="814" alt="locality_outputs" src="https://user-images.githubusercontent.com/5157485/27009095-0e7ba6fe-4e3a-11e7-9663-f8eee2d64c9e.png">
 
-#### Analysis
 The output of the locality prior layer has activations which have a slightly but statistically reduced variance when compared to the control network. 
 ![variances](https://user-images.githubusercontent.com/5157485/27009241-f1f8fe4c-4e3d-11e7-9815-70387b45ee4f.png)
 
@@ -92,12 +93,31 @@ We also ran the experiment on ImageNet. We changed the FC6 layer to a LP layer a
 | ----- | ------- |
 | ![mnist_prior](https://user-images.githubusercontent.com/5157485/27009331-ea1344ce-4e3f-11e7-998c-3b9a940273b8.png) | ![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27009386-689ec632-4e41-11e7-9c9d-8fb0afe38f63.png) |
 
+#### Locality inputs (FC5 outputs)
+<img width="456" alt="fc1_imagenet" src="https://user-images.githubusercontent.com/5157485/27014450-382ca9ca-4eae-11e7-9c0f-2fb9226adad7.png">
+
+| Locality Variance | Control Variance |
+| ----------------- | ---------------- |
+| 637.8             |  684.7           |
+`T-score: -40.01, P-value: 1.067e-209`
+
+#### Locality output activations (FC6 outputs)
+<img width="465" alt="local_imagenet" src="https://user-images.githubusercontent.com/5157485/27014448-3491ae78-4eae-11e7-979d-65322a605dba.png">
+
+| Locality Variance | Control Variance |
+| ----------------- | ---------------- |
+| 658.2             |  691.5           |
+`T-score: -24.91, P-value: 6.203e-107`
+
 --- 
 
 ## Results
+
+The Locality Prior layer + weight decay is one way to impose a wiring cost on a network. Across multiple datasets
+
 ---
 
-Adding a wiring cost to linear layers
+
 
 ## References
 ---
