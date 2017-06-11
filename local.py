@@ -136,6 +136,7 @@ class AlexNet(nn.Module):
                 ('fc5', nn.ReLU(inplace=True)),
                 ('d5', nn.Dropout()),
                 ('fc6_', self.fc6_),
+                ('fc6bn_', nn.BatchNorm1d(4096)),
                 ('fc6', nn.ReLU(inplace=True)),
                 ('fc7', nn.Linear(4096, num_classes))
             ])
@@ -186,6 +187,7 @@ class MNISTNet(nn.Module):
                 ('fc1', nn.ReLU(inplace=True)),
                 ('d2', nn.Dropout()),
                 ('fc15_', self.fc15),
+                ('fc15bn_', nn.BatchNorm1d(49)),
                 ('fc15', nn.ReLU(inplace=True)),
                 ('active', nn.Linear(49, 10))
             ])

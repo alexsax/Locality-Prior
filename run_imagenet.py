@@ -257,10 +257,10 @@ def validate(val_loader, model, criterion, epoch):
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     if args.arch.lower() == 'alexnet':
         filename = 'runs/run-alexnet/checkpoint-classic.pth.tar'
-        model_filename = 'runs/run-alexnet/model_best-local.pth.tar'        
+        model_filename = 'runs/run-alexnet/model_best-classic.pth.tar'        
     elif args.arch.lower() == 'alexnet':
         filename = 'runs/run-alexnet_local/checkpoint-local.pth.tar'
-        model_filename = 'runs/run-alexnet/model_best-local.pth.tar'        
+        model_filename = 'runs/run-alexnet_local/model_best-local.pth.tar'        
     else:
         model_filename = 'model_best.pth.tar'        
     torch.save(state, filename)
