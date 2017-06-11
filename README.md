@@ -4,10 +4,10 @@
 0. Intro
 0. Related Work
 0. Methods
-  0. Implementation
+    0. Implementation
 0. Experiments
-  0. MNIST
-  0. ImageNet
+    0. MNIST
+    0. ImageNet
 0. Results
 0. Conclusions
 0. References 
@@ -19,7 +19,6 @@
 ---
 
 ## Methods 
----
 
 This project proposes what we call a _locality prior_ layer. The locality prior layer is a way to impose a wiring cost between layers. The locality prior (LP) layer admits many different wiring costs and many network topologies. Specifically, the LP layer is a fully connected layer with an elementwise wiring cost between every neuron from the precious layer and every layer of the new layer. 
 
@@ -35,7 +34,7 @@ This is a very simple example of an LP layer, but we can also create more comple
 
 The induced topology can be visualized, just at before. Here is the transmitted signal for the center neuron:
 
-![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27008516-340998d4-4e28-11e7-98d0-8eb7e562d599.png)
+![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27009386-689ec632-4e41-11e7-9c9d-8fb0afe38f63.png)
 
 And for the top-left neuron.
 
@@ -46,8 +45,9 @@ If the input layer has activations (x) of size K and the output is a vector _y_ 
 
 The LP layer is implemented as a layer in PyTorch. The prior should be rescaled so that the total input to each neuron is the same as before, or multiplied by K/sum(inputs). The network will be able to learn from this, but this will also allow smaller weights in W which will interfere with the effectiveness of the weight regularization. Instead, we apply a Batch Normalization layer after the LP layer. In the experiments, we make sure to include the BN layer in the control networks for fair comparisons. 
 
+---
+
 ## Experiments
---- 
 
 We analyze the effects of the LP layer on two standard networks trained on two standard datasets. In particular, we train LeNet on MNIST and AlexNet on ImageNet.
 
@@ -90,8 +90,9 @@ We also ran the experiment on ImageNet. We changed the FC6 layer to a LP layer a
 
 | LeNet | AlexNet |
 | ----- | ------- |
-| ![mnist_prior](https://user-images.githubusercontent.com/5157485/27009331-ea1344ce-4e3f-11e7-998c-3b9a940273b8.png) | ![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27008516-340998d4-4e28-11e7-98d0-8eb7e562d599.png) |
+| ![mnist_prior](https://user-images.githubusercontent.com/5157485/27009331-ea1344ce-4e3f-11e7-998c-3b9a940273b8.png) | ![prior_for_center_neuron](https://user-images.githubusercontent.com/5157485/27009386-689ec632-4e41-11e7-9c9d-8fb0afe38f63.png) |
 
+--- 
 
 ## Results
 ---
