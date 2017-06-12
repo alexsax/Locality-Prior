@@ -100,6 +100,7 @@ Here, digit 3 is the one that causes the local variance to be higher. When digit
 <img width="814" alt="locality_outputs" src="https://user-images.githubusercontent.com/5157485/27009095-0e7ba6fe-4e3a-11e7-9663-f8eee2d64c9e.png">
 
 The output of the locality prior layer has activations which have a slightly but statistically reduced variance when compared to the control network. 
+
 ![variances](https://user-images.githubusercontent.com/5157485/27009241-f1f8fe4c-4e3d-11e7-9815-70387b45ee4f.png)
 
 | Locality Variance | Control Variance |
@@ -108,7 +109,7 @@ The output of the locality prior layer has activations which have a slightly but
 `T-score: -6.49, P-value: 1.35e-10`
 
 ### ImageNet
-Below are some sample outputs an an analysis of the variances between the two networks. We find that both the input activations and output activations of the LP layer display significantly higher neuronal clustering compared to the control network. 
+Below are some randomly sampled outputs (not cherry picked) and an analysis of the variances between the two networks. We find that both the input activations and output activations of the LP layer display significantly higher neuronal clustering compared to the control network. 
 
 #### Locality inputs (FC5 outputs)
 <img width="456" alt="fc1_imagenet" src="https://user-images.githubusercontent.com/5157485/27014450-382ca9ca-4eae-11e7-9c0f-2fb9226adad7.png">
@@ -133,20 +134,23 @@ Below are some sample outputs an an analysis of the variances between the two ne
 
 The Locality Prior layer + weight decay is one way to impose a wiring cost on a network. We show that the LP layer has outputs with significantly lower variance in activations, compared to a control network. We also note that clustering of both inputs and outputs inceases with layer size. 
 
-We think that this is a good demonstration that neuron clustering can arise natu rally from a wiring cost and network topology. 
-
 We think that in a physical network the connections could be sparsified after training. Specifically, the network can be sparsified removing connections which have a small weight in the _W.*P_ matrix. This would be a sort of analogue to reduced brain plasticity in adulthood. We think that this sparsification could be done without a sigificant loss in accuracy.
 
 Another interesting avenue would be to examine whether these representations are nested in the network, as they are in the brain [4].
+
+Finally, the LP layer can be interpreted as the connections between neurons over one timestep. In this light, it would be most effective in a recurrent model. It would be interesting to test the LP layer in a RNN and see if the neurons exhibit stronger functional specification. 
+
+We think that this is a good demonstration that neuron clustering can arise naturally from a wiring cost and network topology. It suggests that functional specification arises naturally from physical constraints and a top-down learning objective. Indeed, it seems fruitful to propose constraints that the brain might be working under and build computational experiments to test these hypotheses, as [6] suggests. We look forward to seeing the results that come out of this marriage of neuroscience and machine learning. 
 
 
 ## References
 ---
 
-[1] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4587756/
-[2] Kanwisher '10: http://www.pnas.org/content/107/25/11163.full.pdf
-[3] Haxby '01: http://haxbylab.dartmouth.edu/publications/HGF+01.pdf
-[4] Grill-Spect0r '14: http://vpnl.stanford.edu/papers/GrillSpectorWeiner_NRN_2014.pdf
+[1] Tosun, D., Rettmann, M. E., Han, X., Tao, X., Xu, C., Resnick, S. M., … Prince, J. L. (2004). Cortical surface segmentation and mapping. NeuroImage, 23(0 1), S108–S118. http://doi.org/10.1016/j.neuroimage.2004.07.042
+[2] Kanwisher, Nancy (2010). Functional specificity in the human brain: A window into the functional architecture of the mind. _Proceedings of the National Academy of Sciences, 107_, 11163-11170.
+http://www.pnas.org/content/107/25/11163.full.pdf
+[3] Haxby, James V., Gobbini, M. Ida, Furey, Maura L., Ishai, Alumit, Schouten, Jennifer L. & Pietrini, Pietro (2001). Distributed and Overlapping Representations of Faces and Objects in Ventral Temporal Cortex. _Science, 293_, 2425-2430.
+[4] van den Hurk, Job, Van Baelen, Marc & Op de Beeck, Hans P. (2017). Development of visual category selectivity in ventral visual cortex does not require visual experience. _Proceedings of the National Academy of Sciences, 114_, E4501-E4510.
 [5] Hebb, D.O. (1949). The Organization of Behavior. New York: Wiley & Sons.
-[6] DiCarlo et al. '12: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3306444/pdf/nihms352068.pdf
-[7] Yamins et al. '14: http://www.pnas.org/content/111/23/8619.abstract
+[6] DiCarlo, J. J., Zoccolan, D., & Rust, N. C. (2012). How does the brain solve visual object recognition? _Neuron, 73(3)_, 415–434. http://doi.org/10.1016/j.neuron.2012.01.010
+[7] Yamins, Daniel L. K., Hong, Ha, Cadieu, Charles F., Solomon, Ethan A., Seibert, Darren & DiCarlo, James J. (2014). Performance-optimized hierarchical models predict neural responses in higher visual cortex. _Proceedings of the National Academy of Sciences, 111_, 8619-8624.
