@@ -118,7 +118,8 @@ The output of the locality prior layer has activations which have a slightly but
 Below are some randomly sampled outputs (not cherry picked) and an analysis of the variances between the two networks. We find that both the input activations and output activations of the LP layer display significantly higher neuronal clustering compared to the control network. 
 
 #### Locality inputs (FC5 outputs)
-<img width="456" alt="fc1_imagenet" src="https://user-images.githubusercontent.com/5157485/27014450-382ca9ca-4eae-11e7-9c0f-2fb9226adad7.png">
+The left column contains the raw activations, and the right column contains the activations after the mean activations are subtracted.
+<img width="873" alt="fc1" src="https://user-images.githubusercontent.com/5157485/27019753-07a546a8-4ef0-11e7-9ca6-430a9ed74df9.png">
 
 | Locality Variance | Control Variance |
 | ----------------- | ---------------- |
@@ -126,7 +127,7 @@ Below are some randomly sampled outputs (not cherry picked) and an analysis of t
 `T-score: -40.01, P-value: 1.067e-209`
 
 #### Locality output activations (FC6 outputs)
-<img width="465" alt="local_imagenet" src="https://user-images.githubusercontent.com/5157485/27014448-3491ae78-4eae-11e7-979d-65322a605dba.png">
+<img width="866" alt="local" src="https://user-images.githubusercontent.com/5157485/27019757-0d198edc-4ef0-11e7-9c97-4e67574df290.png">
 
 | Locality Variance | Control Variance |
 | ----------------- | ---------------- |
