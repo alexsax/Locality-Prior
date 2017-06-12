@@ -1,15 +1,17 @@
 # Locality-Prior
 
 ## Table of Contents 
-0. Intro
-0. Methods
-    0. Implementation
-0. Experiments
-    0. MNIST
-    0. ImageNet
-0. Results
-0. Conclusions
-0. References 
+```
+1. Intro
+2. Methods
+    2.1. Implementation
+3. Experiments
+    3.1. MNIST
+    3.2. ImageNet
+4. Results
+5. Conclusions
+6. References 
+```
 
 ## Intro
 
@@ -147,10 +149,16 @@ We think that this is a good demonstration that neuron clustering can arise natu
 ---
 
 [1] Tosun, D., Rettmann, M. E., Han, X., Tao, X., Xu, C., Resnick, S. M., … Prince, J. L. (2004). Cortical surface segmentation and mapping. NeuroImage, 23(0 1), S108–S118. http://doi.org/10.1016/j.neuroimage.2004.07.042
+
 [2] Kanwisher, Nancy (2010). Functional specificity in the human brain: A window into the functional architecture of the mind. _Proceedings of the National Academy of Sciences, 107_, 11163-11170.
 http://www.pnas.org/content/107/25/11163.full.pdf
+
 [3] Haxby, James V., Gobbini, M. Ida, Furey, Maura L., Ishai, Alumit, Schouten, Jennifer L. & Pietrini, Pietro (2001). Distributed and Overlapping Representations of Faces and Objects in Ventral Temporal Cortex. _Science, 293_, 2425-2430.
+
 [4] van den Hurk, Job, Van Baelen, Marc & Op de Beeck, Hans P. (2017). Development of visual category selectivity in ventral visual cortex does not require visual experience. _Proceedings of the National Academy of Sciences, 114_, E4501-E4510.
+
 [5] Hebb, D.O. (1949). The Organization of Behavior. New York: Wiley & Sons.
+
 [6] DiCarlo, J. J., Zoccolan, D., & Rust, N. C. (2012). How does the brain solve visual object recognition? _Neuron, 73(3)_, 415–434. http://doi.org/10.1016/j.neuron.2012.01.010
+
 [7] Yamins, Daniel L. K., Hong, Ha, Cadieu, Charles F., Solomon, Ethan A., Seibert, Darren & DiCarlo, James J. (2014). Performance-optimized hierarchical models predict neural responses in higher visual cortex. _Proceedings of the National Academy of Sciences, 111_, 8619-8624.
