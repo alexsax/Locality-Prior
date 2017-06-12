@@ -1,4 +1,5 @@
-# Locality-Prior
+# Locality Prior
+## A wiring cost for neural networks
 
 ## Table of Contents 
 ```
@@ -9,6 +10,8 @@
     3.1. MNIST
     3.2. ImageNet
 4. Results
+    4.1. MNIST
+    4.2. ImageNet
 5. Conclusions
 6. References 
 ```
@@ -49,12 +52,13 @@ And for the top-left neuron.
 
 ![prior_for_top_left_neuron](https://user-images.githubusercontent.com/5157485/27008518-3cb16dea-4e28-11e7-92ab-add608afff35.png)
 
-#### Implementation
+### Implementation
 If the input layer has activations (x) of size K and the output is a vector _y_ of size K activations, then the LP layer has two matrices and a bias vector. The first one, the prior matrix _P_ is KxK and contains the transmitted signal from neuron _i_ to neuron _j_ in element _ij_. The other matrix _W_ is the standard KxK one for a FC layer and the bias _b_ is included here. The prior is multiplied with the activations after the FC layer, elementwise. The activations _A_ are computed as _A = P.*(Wx + b)_. 
 
 The LP layer is implemented as a layer in PyTorch. The prior should be rescaled so that the total input to each neuron is the same as before, or multiplied by K/sum(inputs). The network will be able to learn from this, but this will also allow smaller weights in W which will interfere with the effectiveness of the weight regularization. Instead, we apply a Batch Normalization layer after the LP layer. In the experiments, we make sure to include the BN layer in the control networks for fair comparisons. 
 
 Note: This could probably also be implemented as a convolutional layer, too. 
+
 ---
 
 ## Experiments
@@ -144,9 +148,9 @@ Finally, the LP layer can be interpreted as the connections between neurons over
 
 We think that this is a good demonstration that neuron clustering can arise naturally from a wiring cost and network topology. It suggests that functional specification arises naturally from physical constraints and a top-down learning objective. Indeed, it seems fruitful to propose constraints that the brain might be working under and build computational experiments to test these hypotheses, as [6] suggests. We look forward to seeing the results that come out of this marriage of neuroscience and machine learning. 
 
+---
 
 ## References
----
 
 [1] Tosun, D., Rettmann, M. E., Han, X., Tao, X., Xu, C., Resnick, S. M., … Prince, J. L. (2004). Cortical surface segmentation and mapping. NeuroImage, 23(0 1), S108–S118. http://doi.org/10.1016/j.neuroimage.2004.07.042
 
@@ -162,3 +166,6 @@ http://www.pnas.org/content/107/25/11163.full.pdf
 [6] DiCarlo, J. J., Zoccolan, D., & Rust, N. C. (2012). How does the brain solve visual object recognition? _Neuron, 73(3)_, 415–434. http://doi.org/10.1016/j.neuron.2012.01.010
 
 [7] Yamins, Daniel L. K., Hong, Ha, Cadieu, Charles F., Solomon, Ethan A., Seibert, Darren & DiCarlo, James J. (2014). Performance-optimized hierarchical models predict neural responses in higher visual cortex. _Proceedings of the National Academy of Sciences, 111_, 8619-8624.
+
+---
+
