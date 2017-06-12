@@ -123,16 +123,16 @@ The left column contains the raw activations, and the right column contains the 
 
 | Locality Variance | Control Variance |
 | ----------------- | ---------------- |
-| 637.8             |  684.7           |
-`T-score: -40.01, P-value: 1.067e-209`
+| 630.9             |  687.4           |
+`T-score: -38.98, P-value: 8.087e-203`
 
 #### Locality output activations (FC6 outputs)
 <img width="866" alt="local" src="https://user-images.githubusercontent.com/5157485/27019757-0d198edc-4ef0-11e7-9c97-4e67574df290.png">
 
 | Locality Variance | Control Variance |
 | ----------------- | ---------------- |
-| 658.2             |  691.5           |
-`T-score: -24.91, P-value: 6.203e-107`
+| 653.4             |  691.6           |
+`T-score: --26.08, P-value: 8.463e-115`
 
 
 ---
